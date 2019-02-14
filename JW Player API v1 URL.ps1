@@ -26,5 +26,18 @@ $myvar = "api_format=$api_format&api_key=$api_key&api_nonce=$api_nonce&api_times
 
 $api_signature = Get-StringHash $myvar "SHA1"
 
-$url = "https://api.jwplatform.com/v1/videos/list/?api_format=$api_format&api_key=$api_key&api_nonce=$api_nonce&api_timestamp=$api_timestamp&result_limit=$result_limit&result_offset=$result_offset&api_signature=$api_signature"
-Write-Host "URL: " $url
+$uri = "https://api.jwplatform.com/v1/videos/list/?api_format=$api_format&api_key=$api_key&api_nonce=$api_nonce&api_timestamp=$api_timestamp&result_limit=$result_limit&result_offset=$result_offset&api_signature=$api_signature"
+
+$data = Invoke-WebRequest $uri | ConvertFrom-Json
+
+$result = @()
+ 
+foreach ($item in $data.videos) {
+    $PSObject = New-Object -TypeName PSObject
+    $PSObject | Add-Member -Name 'title' -MemberType Noteproperty -Value $item.title
+    $PSObject | Add-Member -Name 'key' -MemberType Noteproperty -Value $item.key
+    
+    $result += $PSObject
+}
+
+$result | export-csv -Path c:\temp\jwexport-$result_offset-$result_limit.csv -NoTypeInformation
