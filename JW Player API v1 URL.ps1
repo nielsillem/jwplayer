@@ -1,6 +1,7 @@
 ﻿# PowerShell script to build JwPlayer API v1 url
 # Niels Illem
-# 12 feb 2019
+# 12 feb 2019 v 1.0
+# 14 feb 2019 v 1.1 added .csv export
 #
 # Source Hash function: https://gallery.technet.microsoft.com/scriptcenter/Get-StringHash-aa843f71
 
